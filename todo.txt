@@ -1,0 +1,19 @@
+    == TODO ==
+
+ - set up a window                  [x]
+ - set up a moving fishing Reel     [x]
+ - fishing slider                   [ ]
+ - moving fish target               [ ]
+ - collision between fish and reel  [ ]
+ - success slider                   [ ]
+ - score points                     [ ]
+ - randomize fish attributes /types [ ]
+ - display fish sprite              [ ]
+ - pause screen                     [ ]
+
+
+    - bonus - 
+ - customize fishing rod?           [ ]
+ - bubble particles?                [ ]
+ - animations, fx                   [ ]
+ - sfx?                             [ ]
