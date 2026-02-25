@@ -1,2 +1,2 @@
-# reel-fishin
+# reel-fishin 🐟
 Fishing game made in raylib
