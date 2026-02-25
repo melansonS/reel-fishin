@@ -2,10 +2,11 @@
 
  - set up a window                  [x]
  - set up a moving fishing Reel     [x]
- - fishing slider                   [ ]
- - moving fish target               [ ]
+ - fishing slider                   [x]
+ - moving fish target               [x]
  - collision between fish and reel  [ ]
  - success slider                   [ ]
+    - changing color                [ ]
  - score points                     [ ]
  - randomize fish attributes /types [ ]
  - display fish sprite              [ ]
@@ -13,7 +14,8 @@
 
 
     - bonus - 
- - customize fishing rod?           [ ]
- - bubble particles?                [ ]
- - animations, fx                   [ ]
- - sfx?                             [ ]
+ - customize fishing rod?                    [ ]
+ - bubble particles?                         [ ]
+ - animations, fx                            [ ]
+    - spinning fishing reel while colliding  [ ]
+ - sfx?                                      [ ]
