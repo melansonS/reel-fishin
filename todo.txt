@@ -4,7 +4,7 @@
  - set up a moving fishing Reel     [x]
  - fishing slider                   [x]
  - moving fish target               [x]
- - collision between fish and reel  [ ]
+ - collision between fish and reel  [x]
  - success slider                   [ ]
     - changing color                [ ]
  - score points                     [ ]
