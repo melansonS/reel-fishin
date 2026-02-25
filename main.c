@@ -40,12 +40,17 @@ int main(void) {
     srand((unsigned)time(NULL));
     InitWindow(WIDTH, HEIGHT, "Reel Fishin'");
 
+    Image image = LoadImage("resources/pixel_fish2.png");     // Loaded in CPU memory (RAM)
+    Texture2D fish_texture = LoadTextureFromImage(image);     // Image converted to texture, GPU memory (VRAM)
+    UnloadImage(image);
+
     SetTargetFPS(60);
 
     Rectangle slidder = {SLIDDER_X, SLIDDER_Y, SLIDDER_WIDTH, SLIDDER_HEIGHT};
     reel_t reel = {{SLIDDER_X, 100, SLIDDER_WIDTH, 20}, 1, WHITE};
     fish_t fish = {{SLIDDER_X, 100, SLIDDER_WIDTH, 50}, 1, GREEN, DOWN, 1, 8};
     dir_t direction = UP;
+    Vector2 fish_pos = {300, 300};
 
     while(!WindowShouldClose())
     {
@@ -60,6 +65,7 @@ int main(void) {
             moveFish(&fish);
             DrawRectangleRec(fish.rec, fish.color);
             DrawRectangleRec(reel.rec, reel.color);
+            DrawTextureEx(fish_texture, fish_pos, 1, 0.3, WHITE);
             if(checkRecCollision(&reel.rec, &fish.rec)){
                 DrawText("Collision detected", 50, 50, 20, DARKGRAY);
             }

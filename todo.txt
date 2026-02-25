@@ -9,7 +9,7 @@
     - changing color                [ ]
  - score points                     [ ]
  - randomize fish attributes /types [ ]
- - display fish sprite              [ ]
+ - display fish sprite              [x]
  - pause screen                     [ ]
 
 
