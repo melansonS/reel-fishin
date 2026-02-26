@@ -5,7 +5,7 @@
  - fishing slider                   [x]
  - moving fish target               [x]
  - collision between fish and reel  [x]
- - success slider                   [ ]
+ - success slider                   [x]
     - changing color                [ ]
  - score points                     [ ]
  - randomize fish attributes /types [ ]
