@@ -2,48 +2,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include "raylib.h"
-
-#define HEIGHT 600
-#define WIDTH 900
-#define FISH_SLIDER_HEIGHT 400
-#define FISH_SLIDER_WIDTH 20
-#define FISH_SLIDER_X 100
-#define FISH_SLIDER_Y 100
-#define REEL_UPPERBOUND FISH_SLIDER_Y
-#define REEL_LOWERBOUND FISH_SLIDER_Y + FISH_SLIDER_HEIGHT
-#define SUCCESS_SLIDER_X 150
-#define SUCCESS_SLIDER_Y 500
-#define SUCCESS_SLIDER_HEIGHT 40
-#define SUCCESS_SLIDER_WIDTH 600
-
-typedef enum {
-    UP = -1,
-    DOWN = 1
-} dir_t;
-
-typedef struct {
-    Rectangle rec;
-    int  speed;
-    Color color;
-}reel_t;
-
-typedef struct {
-    Rectangle rec;
-    int speed;
-    Color color;
-    dir_t direction;
-    int random_number;
-    int change_dir_chance;
-    Vector2 pos;
-    Texture2D texture;
-} fish_t;
-
-typedef struct {
-    Rectangle rec;
-    float completionVal;
-    Rectangle completionRec;
-    Color color;
-} success_slider_t;
+#include "main.h"
 
 void moveReel(short direction, reel_t* reel);
 void moveFish(fish_t* fish);
@@ -51,7 +10,7 @@ bool checkRecCollision(Rectangle *rec1, Rectangle *rec2);
 
 int main(void) {
     srand((unsigned)time(NULL));
-    InitWindow(WIDTH, HEIGHT, "Reel Fishin'");
+    InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Reel Fishin'");
 
     Image image = LoadImage("resources/pixel_fish2.png");     // Loaded in CPU memory (RAM)
     Texture2D fish_texture = LoadTextureFromImage(image);     // Image converted to texture, GPU memory (VRAM)
@@ -74,9 +33,9 @@ int main(void) {
         } else {
             direction = DOWN;
         }
-        if(reelOnFish && success_slider.completionVal > 0 && success_slider.completionVal < 1){
+        if(reelOnFish && success_slider.completionVal < SUCCESS_SLIDER_WIDTH){
             success_slider.completionVal += 0.003;
-        } else {
+        } else if(success_slider.completionVal > 0) {
             success_slider.completionVal -= 0.002;
         }
         success_slider.completionRec.width = SUCCESS_SLIDER_WIDTH * success_slider.completionVal;

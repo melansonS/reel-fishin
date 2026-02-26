@@ -1,0 +1,45 @@
+#ifndef MAIN_H
+#define MAIN_H
+
+#define WINDOW_HEIGHT 600
+#define WINDOW_WIDTH 900
+#define FISH_SLIDER_HEIGHT 400
+#define FISH_SLIDER_WIDTH 20
+#define FISH_SLIDER_X 100
+#define FISH_SLIDER_Y 100
+#define REEL_UPPERBOUND FISH_SLIDER_Y
+#define REEL_LOWERBOUND FISH_SLIDER_Y + FISH_SLIDER_HEIGHT
+#define SUCCESS_SLIDER_X 150
+#define SUCCESS_SLIDER_Y 500
+#define SUCCESS_SLIDER_HEIGHT 40
+#define SUCCESS_SLIDER_WIDTH 600
+
+typedef enum {
+    UP = -1,
+    DOWN = 1
+} dir_t;
+
+typedef struct {
+    Rectangle rec;
+    int  speed;
+    Color color;
+}reel_t;
+
+typedef struct {
+    Rectangle rec;
+    int speed;
+    Color color;
+    dir_t direction;
+    int random_number;
+    int change_dir_chance;
+    Vector2 pos;
+    Texture2D texture;
+} fish_t;
+
+typedef struct {
+    Rectangle rec;
+    float completionVal;
+    Rectangle completionRec;
+    Color color;
+} success_slider_t;
+#endif
