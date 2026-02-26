@@ -7,6 +7,7 @@
 void moveReel(short direction, reel_t* reel);
 void moveFish(fish_t* fish);
 bool checkRecCollision(Rectangle *rec1, Rectangle *rec2);
+void blendColors(Color col1, Color col2, float percent, Color *blended);
 
 int main(void) {
     srand((unsigned)time(NULL));
@@ -25,15 +26,19 @@ int main(void) {
     dir_t direction = UP;
     bool reelOnFish = false;
 
+
+    Color blended;
+
     while(!WindowShouldClose())
     {
+        blendColors(GREEN, RED, success_slider.completionVal, &blended);
         reelOnFish = checkRecCollision(&reel.rec, &fish.rec);
         if(IsKeyDown(KEY_SPACE)) {
             direction = UP;
         } else {
             direction = DOWN;
         }
-        if(reelOnFish && success_slider.completionVal < SUCCESS_SLIDER_WIDTH){
+        if(reelOnFish && success_slider.completionVal < 1){
             success_slider.completionVal += 0.003;
         } else if(success_slider.completionVal > 0) {
             success_slider.completionVal -= 0.002;
@@ -54,6 +59,11 @@ int main(void) {
             DrawRectangleLinesEx(fish_slider, 2, BLACK);
             DrawRectangleRec(success_slider.completionRec, success_slider.color);
             DrawRectangleLinesEx(success_slider.rec, 2, BLACK);
+
+
+            DrawRectangle(60, 60, 60 ,60, GREEN);
+            DrawRectangle(125, 60, 60 ,60, blended);
+            DrawRectangle(190, 60, 60 ,60, RED);
         EndDrawing();
     }
 
@@ -87,3 +97,12 @@ bool checkRecCollision(Rectangle *rec1, Rectangle *rec2) {
     }
 }
 
+void blendColors(Color col1, Color col2, float percent, Color *blended) {
+    int maxR = col2.r - col1.r;
+    int maxG = col2.g - col1.g;
+    int maxB = col2.b - col1.b;
+    blended->r = col1.r + maxR * percent;
+    blended->g = col1.g + maxG * percent;
+    blended->b = col1.b + maxB * percent;
+    blended->a = col1.a;
+}
