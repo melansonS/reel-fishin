@@ -17,6 +17,14 @@
 #define SUCCESS_SLIDER_DANGER_COLOR_TH 0.33
 
 typedef enum {
+    LANDING_PAGE,
+    CATCHING_FISH,
+    REEL_RESULTS,
+    PAUSE,
+    ERROR
+} gameState_t;
+
+typedef enum {
     UP = -1,
     DOWN = 1
 } dir_t;

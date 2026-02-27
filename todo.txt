@@ -7,10 +7,13 @@
  - collision between fish and reel  [x]
  - success slider                   [x]
     - changing color                [x]
- - score points                     [ ]
+ - "catch fish" when slider is full [ ]
+ - generate next fish               [ ]
  - randomize fish attributes /types [ ]
+ - score points                     [ ]
  - display fish sprite              [x]
- - pause screen                     [ ]
+ - pause screen                     [x]
+ - welcome / landing page           [x]
 
 
     - bonus - 

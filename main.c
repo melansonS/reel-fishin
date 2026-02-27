@@ -25,55 +25,90 @@ int main(void) {
     reel_t reel = {{FISH_SLIDER_X, 100, FISH_SLIDER_WIDTH, 10}, 1, WHITE};
     fish_t fish = {{FISH_SLIDER_X, 100, FISH_SLIDER_WIDTH, 50}, 1, GREEN, DOWN, 1, 8,{300, 300}, fish_texture};
     dir_t direction = UP;
-    bool reelOnFish = false;
+    bool isReelOnFish = false;
 
     Color blendedslidderColor;
     float adjustedBlendPercent = 0.0;
+    gameState_t state = LANDING_PAGE;
 
     while(!WindowShouldClose())
     {
-        blendColors(GREEN, RED, success_slider.completionVal, &blendedslidderColor);
-        reelOnFish = checkRecCollision(&reel.rec, &fish.rec);
-        if(IsKeyDown(KEY_SPACE)) {
-            direction = UP;
-        } else {
-            direction = DOWN;
-        }
-        if(reelOnFish && success_slider.completionVal < 1){
-            success_slider.completionVal += 0.003;
-        } else if(success_slider.completionVal > 0) {
-            success_slider.completionVal -= 0.002;
-        }
+        switch(state) {
+            case(LANDING_PAGE):
+                if(IsKeyDown(KEY_SPACE)) {
+                    state = CATCHING_FISH;
+                }
+                break;
+            case(CATCHING_FISH):
+                isReelOnFish = checkRecCollision(&reel.rec, &fish.rec);
+                if(IsKeyDown(KEY_SPACE)) {
+                    direction = UP;
+                } else {
+                    direction = DOWN;
+                }
+                if(isReelOnFish && success_slider.completionVal < 1){
+                    success_slider.completionVal += 0.003;
+                } else if(success_slider.completionVal > 0) {
+                    success_slider.completionVal -= 0.002;
+                }
 
 
-        if(success_slider.completionVal < SUCCESS_SLIDER_DANGER_COLOR_TH) {
-            adjustedBlendPercent = success_slider.completionVal / SUCCESS_SLIDER_DANGER_COLOR_TH;
-            blendColors(RED, YELLOW, adjustedBlendPercent, &blendedslidderColor);
-            success_slider.color = blendedslidderColor;
-        }else if(success_slider.completionVal > SUCCESS_SLIDER_VICTORY_COLOR_TH ) {
-            adjustedBlendPercent = (success_slider.completionVal - SUCCESS_SLIDER_VICTORY_COLOR_TH) / ( 1 - SUCCESS_SLIDER_VICTORY_COLOR_TH);
-            blendColors(YELLOW, GREEN, adjustedBlendPercent , &blendedslidderColor);
-            success_slider.color = blendedslidderColor;
-        } else {
-            success_slider.color = YELLOW;
+                if(success_slider.completionVal < SUCCESS_SLIDER_DANGER_COLOR_TH) {
+                    adjustedBlendPercent = success_slider.completionVal / SUCCESS_SLIDER_DANGER_COLOR_TH;
+                    blendColors(RED, YELLOW, adjustedBlendPercent, &blendedslidderColor);
+                    success_slider.color = blendedslidderColor;
+                }else if(success_slider.completionVal > SUCCESS_SLIDER_VICTORY_COLOR_TH ) {
+                    adjustedBlendPercent = (success_slider.completionVal - SUCCESS_SLIDER_VICTORY_COLOR_TH) / ( 1 - SUCCESS_SLIDER_VICTORY_COLOR_TH);
+                    blendColors(YELLOW, GREEN, adjustedBlendPercent , &blendedslidderColor);
+                    success_slider.color = blendedslidderColor;
+                } else {
+                    success_slider.color = YELLOW;
+                }
+                success_slider.completionRec.width = SUCCESS_SLIDER_WIDTH * success_slider.completionVal;
+                moveReel(direction, &reel);
+                moveFish(&fish);
+                 
+                if(IsKeyDown(KEY_P)) {
+                    state = PAUSE;
+                }
+                break;
+            case(PAUSE):
+                if(IsKeyDown(KEY_SPACE)) {
+                    state = CATCHING_FISH;
+                }
+                break;
+            default:
+                state = ERROR;
+                break;
         }
-        success_slider.completionRec.width = SUCCESS_SLIDER_WIDTH * success_slider.completionVal;
 
         BeginDrawing();
             ClearBackground(SKYBLUE);
-            moveReel(direction, &reel);
-            moveFish(&fish);
-            DrawRectangleRec(fish.rec, fish.color);
-            DrawRectangleRec(reel.rec, reel.color);
-            DrawTextureEx(fish.texture, fish.pos, 1, 0.3, WHITE);
+            switch(state) {
+                case LANDING_PAGE:
+                    DrawText("WELCOME", WINDOW_WIDTH / 2 - 90, WINDOW_HEIGHT / 2 - 40, 40, DARKGRAY);
+                    DrawText("Press Space to continue", WINDOW_WIDTH / 2 - 230, WINDOW_HEIGHT / 2, 40, DARKGRAY);
+                    break;
+                case CATCHING_FISH:
+                    DrawRectangleRec(fish.rec, fish.color);
+                    DrawRectangleRec(reel.rec, reel.color);
+                    DrawTextureEx(fish.texture, fish.pos, 1, 0.3, WHITE);
 
-            if(reelOnFish){
-                DrawText("Collision detected", 50, 50, 20, DARKGRAY);
+                    if(isReelOnFish){
+                        DrawText("Collision detected", 50, 50, 20, DARKGRAY);
+                    }
+                    DrawRectangleLinesEx(fish_slider, 2, BLACK);
+                    DrawRectangleRec(success_slider.completionRec, success_slider.color);
+                    DrawRectangleLinesEx(success_slider.rec, 2, BLACK);
+
+                    break;
+                case PAUSE:
+                    DrawText("PAUSED", WINDOW_WIDTH / 2 - 90, WINDOW_HEIGHT / 2 - 40, 40, DARKGRAY);
+                    DrawText("Press Space to continue", WINDOW_WIDTH / 2 - 230, WINDOW_HEIGHT / 2, 40, DARKGRAY);
+
+                default:
+                    break;
             }
-            DrawRectangleLinesEx(fish_slider, 2, BLACK);
-            DrawRectangleRec(success_slider.completionRec, success_slider.color);
-            DrawRectangleLinesEx(success_slider.rec, 2, BLACK);
-
         EndDrawing();
     }
 
