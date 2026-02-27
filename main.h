@@ -29,6 +29,11 @@ typedef enum {
     DOWN = 1
 } dir_t;
 
+typedef enum {
+    ESCAPED,
+    CAUGHT
+} fish_result_t;
+
 typedef struct {
     Rectangle rec;
     int  speed;
@@ -40,10 +45,12 @@ typedef struct {
     int speed;
     Color color;
     dir_t direction;
+    int scoreVal;
     int random_number;
     int change_dir_chance;
     Vector2 pos;
     Texture2D texture;
+    fish_result_t result;
 } fish_t;
 
 typedef struct {
@@ -52,4 +59,9 @@ typedef struct {
     Rectangle completionRec;
     Color color;
 } success_slider_t;
+
+typedef struct {
+    int score;
+} player_t;
+
 #endif
