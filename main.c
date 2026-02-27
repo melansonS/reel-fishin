@@ -133,6 +133,7 @@ int main(void) {
                 case PAUSE:
                     DrawText("PAUSED", WINDOW_WIDTH / 2 - 90, WINDOW_HEIGHT / 2 - 40, 40, DARKGRAY);
                     DrawText("Press Space to continue", WINDOW_WIDTH / 2 - 230, WINDOW_HEIGHT / 2, 40, DARKGRAY);
+                    break;
                 case REEL_RESULTS:
                     char result[20];
                     if(current_fish.result == CAUGHT) {
