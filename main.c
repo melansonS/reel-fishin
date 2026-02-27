@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
@@ -26,12 +27,12 @@ int main(void) {
     dir_t direction = UP;
     bool reelOnFish = false;
 
-
-    Color blended;
+    Color blendedslidderColor;
+    float adjustedBlendPercent = 0.0;
 
     while(!WindowShouldClose())
     {
-        blendColors(GREEN, RED, success_slider.completionVal, &blended);
+        blendColors(GREEN, RED, success_slider.completionVal, &blendedslidderColor);
         reelOnFish = checkRecCollision(&reel.rec, &fish.rec);
         if(IsKeyDown(KEY_SPACE)) {
             direction = UP;
@@ -42,6 +43,19 @@ int main(void) {
             success_slider.completionVal += 0.003;
         } else if(success_slider.completionVal > 0) {
             success_slider.completionVal -= 0.002;
+        }
+
+
+        if(success_slider.completionVal < SUCCESS_SLIDER_DANGER_COLOR_TH) {
+            adjustedBlendPercent = success_slider.completionVal / SUCCESS_SLIDER_DANGER_COLOR_TH;
+            blendColors(RED, YELLOW, adjustedBlendPercent, &blendedslidderColor);
+            success_slider.color = blendedslidderColor;
+        }else if(success_slider.completionVal > SUCCESS_SLIDER_VICTORY_COLOR_TH ) {
+            adjustedBlendPercent = (success_slider.completionVal - SUCCESS_SLIDER_VICTORY_COLOR_TH) / ( 1 - SUCCESS_SLIDER_VICTORY_COLOR_TH);
+            blendColors(YELLOW, GREEN, adjustedBlendPercent , &blendedslidderColor);
+            success_slider.color = blendedslidderColor;
+        } else {
+            success_slider.color = YELLOW;
         }
         success_slider.completionRec.width = SUCCESS_SLIDER_WIDTH * success_slider.completionVal;
 
@@ -60,10 +74,6 @@ int main(void) {
             DrawRectangleRec(success_slider.completionRec, success_slider.color);
             DrawRectangleLinesEx(success_slider.rec, 2, BLACK);
 
-
-            DrawRectangle(60, 60, 60 ,60, GREEN);
-            DrawRectangle(125, 60, 60 ,60, blended);
-            DrawRectangle(190, 60, 60 ,60, RED);
         EndDrawing();
     }
 
@@ -98,6 +108,7 @@ bool checkRecCollision(Rectangle *rec1, Rectangle *rec2) {
 }
 
 void blendColors(Color col1, Color col2, float percent, Color *blended) {
+    if(percent > 1) percent = 1;
     int maxR = col2.r - col1.r;
     int maxG = col2.g - col1.g;
     int maxB = col2.b - col1.b;
