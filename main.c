@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <time.h>
 #include <stdbool.h>
 #include "raylib.h"
 #include "main.h"
+#include "screenLayouts.h"
 
 void moveReel(short direction, reel_t* pReel);
 void moveFish(fish_t* pFish);
@@ -15,6 +15,8 @@ void initSlider(success_slider_t *pSlider);
 void initReel(reel_t *pReel);
 
 
+Color fish_colors[NUM_FISH_COLORS] = {RED, ORANGE, YELLOW, BLUE, GREEN, PURPLE};
+int fish_slider_heights[] = {30, 60, 90};
 Texture2D fish_texture;
 Texture2D boat_texture;
 
@@ -121,36 +123,16 @@ int main(void) {
             ClearBackground(SKYBLUE);
             switch(state) {
                 case LANDING_PAGE:
-                    DrawText("Reel Fishin'", WINDOW_WIDTH / 2 - 150, WINDOW_HEIGHT / 2 - 100, 60, DARKGRAY);
-                    DrawText("WELCOME", WINDOW_WIDTH / 2 - 90, WINDOW_HEIGHT / 2 - 40, 40, DARKGRAY);
-                    DrawText("Press Space to continue", WINDOW_WIDTH / 2 - 230, WINDOW_HEIGHT / 2, 40, DARKGRAY);
-                    DrawTextureEx(boat_texture, boat_position, 1, 5, WHITE);
+                    displayLandingPage(&boat_texture, &boat_position);
                     break;
                 case CATCHING_FISH:
-                    DrawRectangleRec(current_fish.rec, current_fish.color);
-                    DrawRectangleRec(reel.rec, reel.color);
-                    DrawTextureEx(current_fish.texture, current_fish.pos, 1, current_fish.texture_scale, current_fish.color);
-
-                    DrawText(TextFormat("Fish score: %d", current_fish.scoreVal), 50, 50, 20, DARKGRAY);
-                    DrawRectangleLinesEx(fish_slider, 2, BLACK);
-                    DrawRectangleRec(success_slider.completionRec, success_slider.color);
-                    DrawRectangleLinesEx(success_slider.rec, 2, BLACK);
-
-                    DrawText(TextFormat("Score: %d", player.score), 750, 50, 20, DARKGRAY);
+                    displayCatchingScreen(&current_fish, &fish_slider, &reel, &success_slider, &player);
                     break;
                 case PAUSE:
-                    DrawText("PAUSED", WINDOW_WIDTH / 2 - 90, WINDOW_HEIGHT / 2 - 40, 40, DARKGRAY);
-                    DrawText("Press Space to continue", WINDOW_WIDTH / 2 - 230, WINDOW_HEIGHT / 2, 40, DARKGRAY);
+                    displayPauseScreen();
                     break;
                 case REEL_RESULTS:
-                    char result[20];
-                    if(current_fish.result == CAUGHT) {
-                        strcpy(result, "Caught c:");
-                    } else {
-                       strcpy(result, "Escaped :c");
-                    }
-                    DrawText(TextFormat("RESULTS %s", result), WINDOW_WIDTH / 2 - 90, WINDOW_HEIGHT / 2 - 40, 40, DARKGRAY);
-                    DrawText("Press ENTER to continue", WINDOW_WIDTH / 2 - 230, WINDOW_HEIGHT / 2, 40, DARKGRAY);
+                    displayReelResults(&current_fish);
                 default:
                     break;
             }

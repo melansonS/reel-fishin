@@ -16,8 +16,6 @@
 #define SUCCESS_SLIDER_VICTORY_COLOR_TH 0.77
 #define SUCCESS_SLIDER_DANGER_COLOR_TH 0.33
 #define NUM_FISH_COLORS 6
-Color fish_colors[NUM_FISH_COLORS] = {RED, ORANGE, YELLOW, BLUE, GREEN, PURPLE};
-int fish_slider_heights[] = {30, 60, 90};
 
 typedef enum {
     LANDING_PAGE,
@@ -47,7 +45,7 @@ typedef struct {
     Rectangle rec;
     int  speed;
     Color color;
-}reel_t;
+} reel_t;
 
 typedef struct {
     Rectangle rec;
