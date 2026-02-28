@@ -8,8 +8,8 @@
  - success slider                   [x]
     - changing color                [x]
  - "catch fish" when slider is full [x]
- - generate next fish               [ ]
- - randomize fish attributes /types [ ]
+ - generate next fish               [x]
+ - randomize fish attributes /color [x]
     - fish color                    [x]
  - score points                     [x]
     - performance based scores      [x]
@@ -23,6 +23,9 @@
 
     - bonus - 
  - customize fishing rod attributes?            [ ]
+ - different fish "types                        [ ]
+    - different sprites                         [ ]
+    - different "qualities"                     [ ]
  - generate caustic / water refraction noise bg [ ]
     - little fish swimming in background?       [ ]
     - sand flecks                               [ ]

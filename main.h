@@ -11,10 +11,13 @@
 #define REEL_LOWERBOUND FISH_SLIDER_Y + FISH_SLIDER_HEIGHT
 #define SUCCESS_SLIDER_X 150
 #define SUCCESS_SLIDER_Y 500
-#define SUCCESS_SLIDER_HEIGHT 40
+#define SUCCESS_SLIDER_HEIGHT 20
 #define SUCCESS_SLIDER_WIDTH 600
 #define SUCCESS_SLIDER_VICTORY_COLOR_TH 0.77
 #define SUCCESS_SLIDER_DANGER_COLOR_TH 0.33
+#define NUM_FISH_COLORS 6
+Color fish_colors[NUM_FISH_COLORS] = {RED, ORANGE, YELLOW, BLUE, GREEN, PURPLE};
+int fish_slider_heights[] = {30, 60, 90};
 
 typedef enum {
     LANDING_PAGE,
@@ -34,6 +37,12 @@ typedef enum {
     CAUGHT
 } fish_result_t;
 
+typedef enum {
+    SMALL,
+    MEDIUM,
+    LARGE
+} fish_size_t;
+
 typedef struct {
     Rectangle rec;
     int  speed;
@@ -52,6 +61,9 @@ typedef struct {
     Vector2 pos;
     Texture2D texture;
     fish_result_t result;
+    fish_size_t size;
+    float rotation;
+    float texture_scale;
 } fish_t;
 
 typedef struct {

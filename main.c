@@ -12,6 +12,7 @@ bool checkRecCollision(Rectangle *pRec1, Rectangle *pRec2);
 void blendColors(Color col1, Color col2, float percent, Color *pBlended);
 void initFish(fish_t *pFish);
 void initSlider(success_slider_t *pSlider);
+void initReel(reel_t *pReel);
 
 
 Texture2D fish_texture;
@@ -32,7 +33,8 @@ int main(void) {
     Rectangle fish_slider = {FISH_SLIDER_X, FISH_SLIDER_Y, FISH_SLIDER_WIDTH, FISH_SLIDER_HEIGHT};
     success_slider_t success_slider;
     initSlider(&success_slider);
-    reel_t reel = {{FISH_SLIDER_X, 100, FISH_SLIDER_WIDTH, 10}, 1, WHITE};
+    reel_t reel;
+    initReel(&reel);
     fish_t current_fish;
     initFish(&current_fish);
 
@@ -107,6 +109,7 @@ int main(void) {
                     state = CATCHING_FISH;
                     initFish(&current_fish);
                     initSlider(&success_slider);
+                    initReel(&reel);
                 }
                 break;
             default:
@@ -124,11 +127,9 @@ int main(void) {
                     DrawTextureEx(boat_texture, boat_position, 1, 5, WHITE);
                     break;
                 case CATCHING_FISH:
-                    Vector2 tpos1 = {current_fish.pos.x, current_fish.pos.y - 50};
-                    Vector2 tpos2 = {current_fish.pos.x, current_fish.pos.y - 100};
                     DrawRectangleRec(current_fish.rec, current_fish.color);
                     DrawRectangleRec(reel.rec, reel.color);
-                    DrawTextureEx(current_fish.texture, current_fish.pos, 1, 0.3, current_fish.color);
+                    DrawTextureEx(current_fish.texture, current_fish.pos, 1, current_fish.texture_scale, current_fish.color);
 
                     DrawText(TextFormat("Fish score: %d", current_fish.scoreVal), 50, 50, 20, DARKGRAY);
                     DrawRectangleLinesEx(fish_slider, 2, BLACK);
@@ -198,7 +199,24 @@ void blendColors(Color col1, Color col2, float percent, Color *pBlended) {
 }
 
 void initFish(fish_t *pFish) {
-    fish_t fish =  {{FISH_SLIDER_X, 100, FISH_SLIDER_WIDTH, 50}, 1, GREEN, DOWN, 1000, 50, 1, 8,{300, 300}, fish_texture, ESCAPED};
+    int minSpeed = 1;
+    int maxSpeed = 3;
+    int speed = (rand() % (maxSpeed - minSpeed + 1)) + minSpeed;
+
+    fish_size_t size = (rand() % 3);
+
+    int colorIndex = rand() % NUM_FISH_COLORS;
+    Color fishColor = fish_colors[colorIndex];
+    
+    Vector2 fishPos = {300, 250};
+    fishPos.y -= size * 70;
+    float textureScale = 0.3 + (float) size / 5;
+    float rotation = 1.0;
+    int scoreVal = 1000;
+    int minScore = 50;
+    int changeDirectionChance = 8;
+
+    fish_t fish =  {{FISH_SLIDER_X, 250, FISH_SLIDER_WIDTH, fish_slider_heights[size]}, speed, fishColor, DOWN, scoreVal, minScore, 1, changeDirectionChance, fishPos, fish_texture, ESCAPED, size, rotation, textureScale};
     *pFish = fish;
 }
 
@@ -206,4 +224,9 @@ void initSlider(success_slider_t *pSlider) {
 
     success_slider_t slider = {{SUCCESS_SLIDER_X, SUCCESS_SLIDER_Y, SUCCESS_SLIDER_WIDTH, SUCCESS_SLIDER_HEIGHT}, 0.5, {SUCCESS_SLIDER_X, SUCCESS_SLIDER_Y, SUCCESS_SLIDER_WIDTH/2, SUCCESS_SLIDER_HEIGHT}, YELLOW};
     *pSlider = slider;
+}
+
+void initReel(reel_t *pReel) {
+    reel_t reel = {{FISH_SLIDER_X, 250, FISH_SLIDER_WIDTH, 10}, 1, WHITE}; 
+    *pReel = reel;
 }
