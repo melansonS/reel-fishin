@@ -46,6 +46,7 @@ typedef struct {
     Color color;
     dir_t direction;
     int scoreVal;
+    int minScore;
     int random_number;
     int change_dir_chance;
     Vector2 pos;

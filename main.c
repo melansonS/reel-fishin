@@ -15,6 +15,7 @@ void initSlider(success_slider_t *pSlider);
 
 
 Texture2D fish_texture;
+Texture2D boat_texture;
 
 int main(void) {
     srand((unsigned)time(NULL));
@@ -22,6 +23,8 @@ int main(void) {
 
     Image image = LoadImage("resources/pixel_fish2.png");     // Loaded in CPU memory (RAM)
     fish_texture = LoadTextureFromImage(image);     // Image converted to texture, GPU memory (VRAM)
+    image = LoadImage("resources/lil_boat.png");
+    boat_texture = LoadTextureFromImage(image);     // Image converted to texture, GPU memory (VRAM)
     UnloadImage(image);
 
     SetTargetFPS(60);
@@ -35,6 +38,7 @@ int main(void) {
 
     player_t player = {0};
 
+    Vector2 boat_position = {60, 60};
     dir_t direction = UP;
     bool isReelOnFish = false;
 
@@ -61,6 +65,7 @@ int main(void) {
                     success_slider.completionVal += 0.003;
                 } else if(success_slider.completionVal > 0) {
                     success_slider.completionVal -= 0.002;
+                    if(current_fish.scoreVal > current_fish.minScore) current_fish.scoreVal--;
                 }
 
 
@@ -113,17 +118,19 @@ int main(void) {
             ClearBackground(SKYBLUE);
             switch(state) {
                 case LANDING_PAGE:
+                    DrawText("Reel Fishin'", WINDOW_WIDTH / 2 - 150, WINDOW_HEIGHT / 2 - 100, 60, DARKGRAY);
                     DrawText("WELCOME", WINDOW_WIDTH / 2 - 90, WINDOW_HEIGHT / 2 - 40, 40, DARKGRAY);
                     DrawText("Press Space to continue", WINDOW_WIDTH / 2 - 230, WINDOW_HEIGHT / 2, 40, DARKGRAY);
+                    DrawTextureEx(boat_texture, boat_position, 1, 5, WHITE);
                     break;
                 case CATCHING_FISH:
+                    Vector2 tpos1 = {current_fish.pos.x, current_fish.pos.y - 50};
+                    Vector2 tpos2 = {current_fish.pos.x, current_fish.pos.y - 100};
                     DrawRectangleRec(current_fish.rec, current_fish.color);
                     DrawRectangleRec(reel.rec, reel.color);
-                    DrawTextureEx(current_fish.texture, current_fish.pos, 1, 0.3, WHITE);
+                    DrawTextureEx(current_fish.texture, current_fish.pos, 1, 0.3, current_fish.color);
 
-                    if(isReelOnFish){
-                        DrawText("Collision detected", 50, 50, 20, DARKGRAY);
-                    }
+                    DrawText(TextFormat("Fish score: %d", current_fish.scoreVal), 50, 50, 20, DARKGRAY);
                     DrawRectangleLinesEx(fish_slider, 2, BLACK);
                     DrawRectangleRec(success_slider.completionRec, success_slider.color);
                     DrawRectangleLinesEx(success_slider.rec, 2, BLACK);
@@ -191,7 +198,7 @@ void blendColors(Color col1, Color col2, float percent, Color *pBlended) {
 }
 
 void initFish(fish_t *pFish) {
-    fish_t fish =  {{FISH_SLIDER_X, 100, FISH_SLIDER_WIDTH, 50}, 1, GREEN, DOWN, 1000, 1, 8,{300, 300}, fish_texture};
+    fish_t fish =  {{FISH_SLIDER_X, 100, FISH_SLIDER_WIDTH, 50}, 1, GREEN, DOWN, 1000, 50, 1, 8,{300, 300}, fish_texture, ESCAPED};
     *pFish = fish;
 }
 
