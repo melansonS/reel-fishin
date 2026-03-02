@@ -24,7 +24,7 @@ int main(void) {
     srand((unsigned)time(NULL));
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Reel Fishin'");
 
-    Image image = LoadImage("resources/pixel_fish2.png");     // Loaded in CPU memory (RAM)
+    Image image = LoadImage("resources/pixel_fish2_small.png");     // Loaded in CPU memory (RAM)
     fish_texture = LoadTextureFromImage(image);     // Image converted to texture, GPU memory (VRAM)
     image = LoadImage("resources/lil_boat.png");
     boat_texture = LoadTextureFromImage(image);     // Image converted to texture, GPU memory (VRAM)
@@ -59,17 +59,29 @@ int main(void) {
                 }
                 break;
             case(CATCHING_FISH):
-                isReelOnFish = checkRecCollision(&reel.rec, &current_fish.rec);
                 if(IsKeyDown(KEY_SPACE)) {
                     direction = UP;
                 } else {
                     direction = DOWN;
                 }
+                isReelOnFish = checkRecCollision(&reel.rec, &current_fish.rec);
                 if(isReelOnFish && success_slider.completionVal < 1){
                     success_slider.completionVal += 0.003;
+                    if(current_fish.rotation > -22) {
+                        current_fish.rotation -= 0.3;
+                    }
+                    if(current_fish.texture_dest_rec.y > (WINDOW_HEIGHT/2) - 22) {
+                        current_fish.texture_dest_rec.y -= 0.3;
+                    }
                 } else if(success_slider.completionVal > 0) {
                     success_slider.completionVal -= 0.002;
                     if(current_fish.scoreVal > current_fish.minScore) current_fish.scoreVal--;
+                    if(current_fish.rotation < 22 ) {
+                        current_fish.rotation += 0.3;
+                    }
+                    if(current_fish.texture_dest_rec.y < (WINDOW_HEIGHT/2) + 22) {
+                        current_fish.texture_dest_rec.y += 0.3;
+                    }
                 }
 
 
@@ -185,25 +197,28 @@ void initFish(fish_t *pFish) {
     int maxSpeed = 3;
     int speed = (rand() % (maxSpeed - minSpeed + 1)) + minSpeed;
 
-    fish_size_t size = (rand() % 3);
+    fish_size_t size = (rand() % 3) + 1;
 
     int colorIndex = rand() % NUM_FISH_COLORS;
     Color fishColor = fish_colors[colorIndex];
     
+    Rectangle fish_src_rec = {0, 0, FISH_TEXTURE_WIDTH, FISH_TEXTURE_HEIGHT};
+    Rectangle fish_dest_rec = {WINDOW_WIDTH/2, WINDOW_HEIGHT/2, (FISH_TEXTURE_WIDTH/FISH_TEXTURE_SCALE) * size, (FISH_TEXTURE_HEIGHT/FISH_TEXTURE_SCALE) * size};
+    Vector2 fish_origin = {(FISH_TEXTURE_WIDTH/(FISH_TEXTURE_SCALE * 2)) * size, (FISH_TEXTURE_HEIGHT/(FISH_TEXTURE_SCALE * 2)) * size};
     Vector2 fishPos = {300, 250};
+
     fishPos.y -= size * 70;
-    float textureScale = 0.3 + (float) size / 5;
+    float textureScale = 0.3 + (float) size / 5; // no longer needed when using DrawTexturePro
     float rotation = 1.0;
     int scoreVal = 1000;
     int minScore = 50;
     int changeDirectionChance = 8;
 
-    fish_t fish =  {{FISH_SLIDER_X, 250, FISH_SLIDER_WIDTH, fish_slider_heights[size]}, speed, fishColor, DOWN, scoreVal, minScore, 1, changeDirectionChance, fishPos, fish_texture, ESCAPED, size, rotation, textureScale};
+    fish_t fish =  {{FISH_SLIDER_X, 250, FISH_SLIDER_WIDTH, fish_slider_heights[size - 1]}, speed, fishColor, DOWN, scoreVal, minScore, 1, changeDirectionChance, fishPos, fish_texture, ESCAPED, size, rotation, textureScale, fish_src_rec, fish_dest_rec, fish_origin};
     *pFish = fish;
 }
 
 void initSlider(success_slider_t *pSlider) {
-
     success_slider_t slider = {{SUCCESS_SLIDER_X, SUCCESS_SLIDER_Y, SUCCESS_SLIDER_WIDTH, SUCCESS_SLIDER_HEIGHT}, 0.5, {SUCCESS_SLIDER_X, SUCCESS_SLIDER_Y, SUCCESS_SLIDER_WIDTH/2, SUCCESS_SLIDER_HEIGHT}, YELLOW};
     *pSlider = slider;
 }

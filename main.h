@@ -7,6 +7,9 @@
 #define FISH_SLIDER_WIDTH 20
 #define FISH_SLIDER_X 100
 #define FISH_SLIDER_Y 100
+#define FISH_TEXTURE_WIDTH 275
+#define FISH_TEXTURE_HEIGHT 236
+#define FISH_TEXTURE_SCALE 5
 #define REEL_UPPERBOUND FISH_SLIDER_Y
 #define REEL_LOWERBOUND FISH_SLIDER_Y + FISH_SLIDER_HEIGHT
 #define SUCCESS_SLIDER_X 150
@@ -62,6 +65,9 @@ typedef struct {
     fish_size_t size;
     float rotation;
     float texture_scale;
+    Rectangle texture_src_rec;
+    Rectangle texture_dest_rec;
+    Vector2 texture_origin;
 } fish_t;
 
 typedef struct {

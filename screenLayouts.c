@@ -12,7 +12,7 @@ void displayLandingPage(Texture2D *pBoat_texture, Vector2 *pBoat_position) {
 void displayCatchingScreen(fish_t *pCurrent_fish, Rectangle *pFish_slider, reel_t *pReel, success_slider_t *pSuccess_slider, player_t *pPlayer) {
     DrawRectangleRec(pCurrent_fish->rec, pCurrent_fish->color);
     DrawRectangleRec(pReel->rec, pReel->color);
-    DrawTextureEx(pCurrent_fish->texture, pCurrent_fish->pos, 1, pCurrent_fish->texture_scale, pCurrent_fish->color);
+    DrawTexturePro(pCurrent_fish->texture, pCurrent_fish->texture_src_rec, pCurrent_fish->texture_dest_rec, pCurrent_fish->texture_origin, pCurrent_fish->rotation, pCurrent_fish->color);
 
     DrawText(TextFormat("Fish score: %d", pCurrent_fish->scoreVal), 50, 50, 20, DARKGRAY);
     DrawRectangleLinesEx(*pFish_slider, 2, BLACK);
