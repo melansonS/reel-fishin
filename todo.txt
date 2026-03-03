@@ -15,9 +15,9 @@
     - performance based scores      [x]
  - display fish sprite              [x]
  - pause screen                     [x]
-    - style pause screen            [ ]
+    - style pause screen            [x]
  - result screen                    [x]
-    - style pause result            [ ]
+    - style result screen           [ ]
  - welcome / landing page           [x]
 
 

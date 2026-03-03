@@ -22,9 +22,23 @@ void displayCatchingScreen(fish_t *pCurrent_fish, Rectangle *pFish_slider, reel_
     DrawText(TextFormat("Score: %d", pPlayer->score), 750, 50, 20, DARKGRAY);
 }
 
-void displayPauseScreen() {
-    DrawText("PAUSED", WINDOW_WIDTH / 2 - 90, WINDOW_HEIGHT / 2 - 40, 40, DARKGRAY);
-    DrawText("Press Space to continue", WINDOW_WIDTH / 2 - 230, WINDOW_HEIGHT / 2, 40, DARKGRAY);
+void displayPauseScreen(fish_t *pCurrent_fish) {
+    DrawText("PAUSED", WINDOW_WIDTH / 2 - 90, WINDOW_HEIGHT / 2 + 90, 40, DARKGRAY);
+    DrawText("Press Space to continue", WINDOW_WIDTH / 2 - 230, WINDOW_HEIGHT / 2 + 130, 40, DARKGRAY);
+    DrawRectangleLinesEx((Rectangle){WINDOW_WIDTH / 2 - 125, 100, 250, 250}, 2, GRAY);
+    DrawTextureEx(pCurrent_fish->texture, (Vector2){WINDOW_WIDTH / 2 - 30, 130}, 1, 0.3, pCurrent_fish->color);
+    DrawText("Size:", WINDOW_WIDTH / 2 - 110, 240, 30, BLACK);
+    for(int i = 0; i < 4; i++) {
+        if(i < pCurrent_fish->size) {
+            DrawRectangle(WINDOW_WIDTH/2 - 110 + 75 + (30 * i), 240, 25, 25, GREEN);
+        }
+    }
+    DrawText("Speed:", WINDOW_WIDTH / 2 - 110, 290, 30, BLACK);
+    for(int i = 0; i < 4; i++) {
+        if(i < pCurrent_fish->speed) {
+            DrawRectangle(WINDOW_WIDTH/2 - 110 + 100 + (30 * i), 290, 25, 25, GREEN);
+        }
+    }
 }
 
 void displayReelResults(fish_t *pCurrent_fish) {

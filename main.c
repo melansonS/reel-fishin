@@ -67,19 +67,19 @@ int main(void) {
                 isReelOnFish = checkRecCollision(&reel.rec, &current_fish.rec);
                 if(isReelOnFish && success_slider.completionVal < 1){
                     success_slider.completionVal += 0.003;
-                    if(current_fish.rotation > -22) {
+                    if(current_fish.rotation > -14) {
                         current_fish.rotation -= 0.3;
                     }
-                    if(current_fish.texture_dest_rec.y > (WINDOW_HEIGHT/2) - 22) {
+                    if(current_fish.texture_dest_rec.y > (WINDOW_HEIGHT/2) - 14) {
                         current_fish.texture_dest_rec.y -= 0.3;
                     }
                 } else if(success_slider.completionVal > 0) {
                     success_slider.completionVal -= 0.002;
                     if(current_fish.scoreVal > current_fish.minScore) current_fish.scoreVal--;
-                    if(current_fish.rotation < 22 ) {
+                    if(current_fish.rotation < 14 ) {
                         current_fish.rotation += 0.3;
                     }
-                    if(current_fish.texture_dest_rec.y < (WINDOW_HEIGHT/2) + 22) {
+                    if(current_fish.texture_dest_rec.y < (WINDOW_HEIGHT/2) + 14) {
                         current_fish.texture_dest_rec.y += 0.3;
                     }
                 }
@@ -141,7 +141,7 @@ int main(void) {
                     displayCatchingScreen(&current_fish, &fish_slider, &reel, &success_slider, &player);
                     break;
                 case PAUSE:
-                    displayPauseScreen();
+                    displayPauseScreen(&current_fish);
                     break;
                 case REEL_RESULTS:
                     displayReelResults(&current_fish);
