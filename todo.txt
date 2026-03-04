@@ -17,7 +17,7 @@
  - pause screen                     [x]
     - style pause screen            [x]
  - result screen                    [x]
-    - style result screen           [ ]
+    - style result screen           [x]
  - welcome / landing page           [x]
 
 
